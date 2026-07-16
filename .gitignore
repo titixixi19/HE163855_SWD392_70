@@ -1,6 +1,16 @@
 # Compiled class file
 *.class
 
+# Build output
+out/
+
+# IDE files
+.idea/
+*.iml
+
+# Runtime-generated log (created automatically on first run)
+resources/log.txt
+
 # Log file
 *.log
 

@@ -1,0 +1,4 @@
+accountNumber,password,status
+1234567890,abc123,ACTIVE
+9876543210,pass456,ACTIVE
+1111111111,test789,LOCKED
