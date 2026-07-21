@@ -6,10 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * DATA ACCESS LAYER
- * Handles all file I/O: reading accounts from CSV, writing login logs.
- */
 public class FileHelper implements IAccountStorage {
 
     private static final String ACCOUNTS_FILE = "resources/accounts.csv";
@@ -17,10 +13,7 @@ public class FileHelper implements IAccountStorage {
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    /**
-     * Read all accounts from accounts.csv.
-     * Format: accountNumber,password,status
-     */
+    
     @Override
     public List<Account> loadAccounts() throws IOException {
         List<Account> list = new ArrayList<>();
@@ -29,7 +22,7 @@ public class FileHelper implements IAccountStorage {
             boolean firstLine = true;
 
             while ((line = reader.readLine()) != null) {
-                if (firstLine) { firstLine = false; continue; } // skip header
+                if (firstLine) { firstLine = false; continue; }
                 line = line.trim();
                 if (line.isEmpty()) continue;
 
@@ -42,10 +35,7 @@ public class FileHelper implements IAccountStorage {
         return list;
     }
 
-    /**
-     * Find a single account by account number.
-     * Returns null if not found.
-     */
+    
     @Override
     public Account findByAccountNumber(String accountNumber) throws IOException {
         for (Account acc : loadAccounts()) {
@@ -56,9 +46,7 @@ public class FileHelper implements IAccountStorage {
         return null;
     }
 
-    /**
-     * Append a login event to log.txt.
-     */
+    
     @Override
     public void writeLog(String accountNumber, String event) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE, true))) {

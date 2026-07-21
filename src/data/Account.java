@@ -1,14 +1,10 @@
 package data;
 
-/**
- * Entity class representing a bank account.
- * Used as a data transfer object between layers.
- */
 public class Account {
 
     private String accountNumber;
     private String password;
-    private String status; // ACTIVE | LOCKED
+    private String status;
 
     public Account(String accountNumber, String password, String status) {
         this.accountNumber = accountNumber;

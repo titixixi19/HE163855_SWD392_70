@@ -2,23 +2,15 @@ package business;
 
 import java.util.Random;
 
-/**
- * BUSINESS LOGIC LAYER
- * Generates random captcha codes. Single responsibility: captcha creation.
- * (Function 4 of the assignment: String generateCaptcha().)
- */
+
 public class CaptchaService implements ICaptchaService {
 
     private static final String CAPTCHA_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
     private static final int    CAPTCHA_LENGTH = 6;
-
     private final Random random;
-
     public CaptchaService() {
         this(new Random());
     }
-
-    /** Injectable Random for deterministic testing. */
     public CaptchaService(Random random) {
         this.random = random;
     }

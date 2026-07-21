@@ -1,40 +1,32 @@
 package business;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Properties;
+import data.IMessageStorage;
 
-/**
- * BUSINESS LOGIC LAYER
- * Manages language switching and message retrieval.
- * Reads from En.properties or Vi.properties (UTF-8).
- */
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 public class LanguageService implements ILanguageService {
 
-    private Properties bundle;
+    private final IMessageStorage storage;
+
+    private Map<String, String> messages;
     private Locate currentLocale;
 
-    public LanguageService() {
-        loadBundle(Locate.EN); // default English
+    public LanguageService(IMessageStorage storage) {
+        this.storage = storage;
+        loadBundle(Locate.EN);
     }
 
-    /**
-     * Switch language to the given locate.
-     */
     @Override
     public void setLocate(Locate locate) {
         loadBundle(locate);
     }
 
-    /**
-     * Get a localised message by key.
-     * Returns the key itself if not found (safe fallback).
-     */
     @Override
     public String getMessage(String key) {
-        return bundle.getProperty(key, "[" + key + "]");
+        String value = messages.get(key);
+        return value != null ? value : "[" + key + "]";
     }
 
     @Override
@@ -44,13 +36,11 @@ public class LanguageService implements ILanguageService {
 
     private void loadBundle(Locate locate) {
         this.currentLocale = locate;
-        this.bundle = new Properties();
-        String path = "resources/" + locate.getFileName() + ".properties";
-        try (InputStreamReader reader =
-                     new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8)) {
-            bundle.load(reader);
+        try {
+            this.messages = storage.loadMessages(locate.getFileName());
         } catch (IOException e) {
-            System.err.println("Warning: could not load " + path + ". Using empty bundle.");
+            this.messages = new HashMap<>();
+            System.err.println("Warning: could not load messages for " + locate.getFileName());
         }
     }
 }
